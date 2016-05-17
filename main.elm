@@ -107,7 +107,8 @@ addWarriorView =
     , label [ for "lastName" ] [ text "Last Name:" ]
     , input [ type' "text", id "lastName" ] []
     , label [ for "ki" ] [ text "Ki:" ]
-    , input [ type' "text", id "ki" ] []   
+    , input [ type' "text", id "ki" ] []
+    , input [ type' "button" ] [ text "Add" ] 
     ]    
 
 -- warriorHeaderView : Html Msg
