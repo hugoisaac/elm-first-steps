@@ -1,6 +1,6 @@
 import Html exposing (..)
 import Html.App as Html
--- import Html.Attributes exposing (..)
+import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 
 main =
@@ -88,16 +88,27 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [] 
-    [ 
-        h1 [] [text "Warriors"] 
-        , table [] (List.map warriorView model.warriors)
-        -- , table [] warriorHeaderView, (List.map warriorView model.warriors)            
-        , br [] []
-        -- , div []
-        -- [
-        --     text ("model: " ++ (toString model))
-        -- ]
+    [ h1 [] [text "Warriors"]
+    , addWarriorView 
+    , table [] (List.map warriorView model.warriors)
+    -- , table [] warriorHeaderView, (List.map warriorView model.warriors)            
+    , br [] []
+    -- , div []
+    -- [
+    --     text ("model: " ++ (toString model))
+    -- ]
     ]
+
+addWarriorView : Html Msg
+addWarriorView =
+    div []
+    [ label [ for "firstName" ] [ text "First Name:" ]
+    , input [ type' "text", id "firstName" ] []
+    , label [ for "lastName" ] [ text "Last Name:" ]
+    , input [ type' "text", id "lastName" ] []
+    , label [ for "ki" ] [ text "Ki:" ]
+    , input [ type' "text", id "ki" ] []   
+    ]    
 
 -- warriorHeaderView : Html Msg
 -- warriorHeaderView =
@@ -112,10 +123,9 @@ view model =
 warriorView : Warrior -> Html Msg
 warriorView warrior =
     tr []
-    [
-        td [] [text (toString warrior.id)]
-        , td [] [text (toFullName warrior)]
-        , td [] [text (toString warrior.ki)]
-        , td [] [text warrior.vegetaSays]
-        , td [] [button [onClick (UseKaioken warrior.id)] [text "Kaio-ken!"]] 
-    ]       
+    [ td [] [text (toString warrior.id)]
+    , td [] [text (toFullName warrior)]
+    , td [] [text (toString warrior.ki)]
+    , td [] [text warrior.vegetaSays]
+    , td [] [button [onClick (UseKaioken warrior.id)] [text "Kaio-ken!"]] 
+    ]
