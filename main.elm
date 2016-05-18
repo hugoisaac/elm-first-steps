@@ -89,18 +89,15 @@ view : Model -> Html Msg
 view model =
     div [] 
     [ h1 [] [text "Warriors"]
-    , addWarriorView 
-    , table [] (List.map warriorView model.warriors)
-    -- , table [] warriorHeaderView, (List.map warriorView model.warriors)            
+    , addwarriorView
+    
+    , table [] (warriorHeaderView :: (List.map warriorRowView model.warriors))            
     , br [] []
-    -- , div []
-    -- [
-    --     text ("model: " ++ (toString model))
-    -- ]
+    -- , modelView model
     ]
 
-addWarriorView : Html Msg
-addWarriorView =
+addwarriorView : Html Msg
+addwarriorView =
     div []
     [ label [ for "firstName" ] [ text "First Name:" ]
     , input [ type' "text", id "firstName" ] []
@@ -111,18 +108,18 @@ addWarriorView =
     , input [ type' "button", value "Add" ] [] 
     ]    
 
--- warriorHeaderView : Html Msg
--- warriorHeaderView =
---     th [] 
---     [
---         td [] [text "Name"]
---         , td [] [text "Ki"]
---         , td [] []
---         , td [] []
---     ]
+warriorHeaderView : Html Msg
+warriorHeaderView =
+    tr [] 
+    [ th [] [ text "Id" ]
+    , th [] [ text "Full Name" ]
+    , th [] [ text "Ki" ]
+    , th [] [ text "Vegeta Says" ]
+    , th [] [ text "Use Kaio-ken" ]
+    ]
 
-warriorView : Warrior -> Html Msg
-warriorView warrior =
+warriorRowView : Warrior -> Html Msg
+warriorRowView warrior =
     tr []
     [ td [] [text (toString warrior.id)]
     , td [] [text (toFullName warrior)]
@@ -130,3 +127,7 @@ warriorView warrior =
     , td [] [text warrior.vegetaSays]
     , td [] [button [onClick (UseKaioken warrior.id)] [text "Kaio-ken!"]] 
     ]
+    
+modelView : Model -> Html Msg
+modelView model =
+    div [] [ text ("model: " ++ (toString model)) ]   
