@@ -7,6 +7,7 @@ import String exposing (..)
 main =
   Html.beginnerProgram { model = model, view = view, update = update }
 
+
 -- MODEL
 
 type alias Model = {
@@ -67,6 +68,7 @@ toFullName warrior = warrior.firstName ++ " " ++ warrior.lastName
 boostKi : Int -> Int
 boostKi ki =
     ki * 2
+
 
 -- UPDATE
 
@@ -157,48 +159,23 @@ bumpId warrior =
 transform : Warrior -> Id -> (WarriorAction) -> Warrior
 transform warrior id action  =
     if warrior.id == id then (action warrior) else warrior
+       
         
 -- VIEW
 
 view : Model -> Html Msg
 view model =
     div [] 
-    [ h1 [] [text "Warriors"]
-    , addwarriorView model.newWarrior   
-    , table [] (warriorHeaderView :: (List.map warriorRowView model.warriors))            
+    [ h1 [] [text "Warriors"]       
+    , warriorTable model.warriors            
     , br [] []
-    -- , modelView model
+    , warriorDetails model.newWarrior
+    , br [] []
+    -- , warriorsModel model
     ]
 
-addwarriorView : Warrior -> Html Msg
-addwarriorView warrior =
-    div []
-    [ label [ for "firstName" ] [ text "First Name:" ]
-    , input 
-        [ type' "text"
-        , id "firstName"
-        , value warrior.firstName
-        , onInput (UpdateFirstName warrior.id) ] []
-    , label [ for "lastName" ] [ text "Last Name:" ]
-    , input 
-        [ type' "text"
-        , id "lastName"
-        , value warrior.lastName
-        , onInput (UpdateLastName warrior.id) ] []
-    , label [ for "ki" ] [ text "Ki:" ]
-    , input 
-        [ type' "text"
-        , id "ki"
-        , value (getNewWarriorKi warrior.ki)
-        , onInput (UpdateKi warrior.id) ] []
-    , input 
-        [ type' "button"
-        , value "Add"
-        , onClick Add ] []
-    ]    
-
-warriorHeaderView : Html Msg
-warriorHeaderView =
+warriorHeader : Html Msg
+warriorHeader =
     tr [] 
     [ th [] [ text "Id" ]
     , th [] [ text "Full Name" ]
@@ -207,8 +184,12 @@ warriorHeaderView =
     , th [] [ text "Use Kaio-ken" ]
     ]
 
-warriorRowView : Warrior -> Html Msg
-warriorRowView warrior =
+warriorTable : List Warrior -> Html Msg
+warriorTable warriors =
+    table [] (warriorHeader :: (List.map warriorRow warriors))
+
+warriorRow : Warrior -> Html Msg
+warriorRow warrior =
     tr []
     [ td [] [text (toString warrior.id)]
     , td [] [text (toFullName warrior)]
@@ -216,10 +197,44 @@ warriorRowView warrior =
     , td [] [text warrior.vegetaSays]
     , td [] [button [onClick (UseKaioken warrior.id)] [text "Kaio-ken!"]] 
     ]
+
+warriorDetails : Warrior -> Html Msg
+warriorDetails warrior =
+    div []
+    [ h2 [] [ text "Add/Edit Warrior" ]
+    , div [] 
+        [ label [ for "firstName" ] [ text "First Name:" ]
+        , input 
+            [ type' "text"
+            , id "firstName"
+            , value warrior.firstName
+            , onInput (UpdateFirstName warrior.id) 
+            ] []
+        ]
+    , div []
+        [ label [ for "lastName" ] [ text "Last Name:" ]
+        , input 
+            [ type' "text"
+            , id "lastName"
+            , value warrior.lastName
+            , onInput (UpdateLastName warrior.id) 
+            ] []            
+        ]
+    , div []
+        [ label [ for "ki" ] [ text "Ki:" ]
+        , input 
+            [ type' "text"
+            , id "ki"
+            , value (getNewWarriorKi warrior.ki)
+            , onInput (UpdateKi warrior.id) 
+            ] []            
+        ]
+    , button [ onClick Add ] [ text "Add" ]
+    ]
     
--- modelView : Model -> Html Msg
--- modelView model =
---     div [] [ text ("model: " ++ (toString model)) ]
+warriorsModel : Model -> Html Msg
+warriorsModel model =
+    div [] [ text ("model: " ++ (toString model)) ]
     
 getNewWarriorKi : Int -> String
 getNewWarriorKi ki =
