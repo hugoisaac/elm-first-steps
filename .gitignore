@@ -3,5 +3,7 @@ elm-package.json
 elm-stuff/
 # elm-repl generated files
 repl-temp-*
-# mac os x files
+# Mac OS X generated files
 .DS_Store
+# VS Code settings
+.vscode
